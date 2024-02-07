@@ -1,4 +1,4 @@
-package src.main;
+package com.decide;
 
 public class Parameters {
     double LENGTH1; // Length in LICs 0, 7, 12
