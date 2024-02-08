@@ -81,7 +81,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
             // Build project from the cloned repository
             // Specify the base directory of the Maven project
-            File baseDirectory = new File(".");
+            File baseDirectory = new File("../git/decide-project");
 
             // Create an invocation request
             InvocationRequest invocationRequest = new DefaultInvocationRequest();
