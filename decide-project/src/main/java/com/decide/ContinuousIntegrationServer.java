@@ -99,7 +99,10 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             invoker.setOutputHandler(outputHandler).execute(invocationRequest);
             System.out.println("Maven command executed successfully.");
 
-            // TODO: Extract information regarding if the compilation and testing succeeded.
+            // Print information to the console
+            System.out.println("Branch triggered: " + branch);
+            System.out.println("User who made the commit: " + json.getJSONObject("pusher").getString("name"));
+            
             // Notify these results (PROPERTY 3)
 
             // Send response to GitHub
