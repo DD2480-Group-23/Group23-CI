@@ -15,7 +15,7 @@ public class Notification {
     public static boolean setStatus(String state, String sha, String repo){
         try{
 
-            String token = "";
+            String token = Token.GITHUB_TOKEN;
 
             // Construct the URL for setting status
             URI uri = new URI("https://api.github.com/repos/" + repo + "/statuses/" + sha);

@@ -68,7 +68,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             String localPath = "../git";
             // URL of remote repository
             String remoteURL = json.getJSONObject("repository").get("clone_url").toString();
-
+            System.out.println(remoteURL);
             // Remove previous repository clone
             File folder = new File(localPath);
             deleteDirectory(folder);
@@ -105,6 +105,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             System.out.println("User who made the commit: " + json.getJSONObject("pusher").getString("name"));
 
             // Notify these results (PROPERTY 3)
+
 
             // Send response to GitHub
             response.getWriter().println("CI job done");
