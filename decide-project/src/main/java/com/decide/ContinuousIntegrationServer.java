@@ -26,11 +26,12 @@ import org.apache.maven.shared.invoker.PrintStreamHandler;
 
 /**
  * Continuous Integration Server for GitHub webhooks
- * 
+ *
  * @author Benjamin Jansson Mbonyimana
  * @author Isadora Fukiat Winter
  * @author Felix Sjögren
  * @author Jonatan Stagge
+ * @author Rasmus Craelius
  */
 public class ContinuousIntegrationServer extends AbstractHandler {
 
@@ -38,7 +39,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * Handles an incoming webhook request.
      * Executes "mvn clean install" on the branch the webhook was activated.
      * This compiles and tests the code.
-     * 
+     *
      * @param target      The target of the request - either a URI or a name.
      * @param baseRequest The original unwrapped request object.
      * @param request     The request either as the {@link Request} object or a
@@ -102,7 +103,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             // Print information to the console
             System.out.println("Branch triggered: " + branch);
             System.out.println("User who made the commit: " + json.getJSONObject("pusher").getString("name"));
-            
+
             // Notify these results (PROPERTY 3)
 
             // Send response to GitHub
@@ -114,7 +115,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
     /**
      * Deletes a directory and all of its content.
-     * 
+     *
      * @param directory The directory to be deleted
      * @return true if success.
      */
@@ -146,7 +147,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
     /**
      * Start the CI server
-     * 
+     *
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
