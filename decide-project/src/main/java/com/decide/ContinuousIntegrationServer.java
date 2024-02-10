@@ -107,7 +107,12 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             // Notify these results (PROPERTY 3)
             // Get sha
             String commitSHA = json.getJSONObject("head_commit").getString("id");
-            Notification.setStatus("pending", commitSHA);
+            if(Notification.setStatus("pending", commitSHA)){
+              System.out.println("Good");
+            }
+            else{
+              System.out.println("Bad");
+            }
 
             // Send response to GitHub
             response.getWriter().println("CI job done");
