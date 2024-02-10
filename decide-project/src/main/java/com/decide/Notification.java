@@ -12,13 +12,13 @@ public class Notification {
     * @param repo
     *
      */
-    public static boolean setStatus(String state, String sha, String repo){
+    public static boolean setStatus(String state, String sha){
         try{
 
-            String token = Token.GITHUB_TOKEN;
+            String token = "";
 
             // Construct the URL for setting status
-            URI uri = new URI("https://api.github.com/repos/" + repo + "/statuses/" + sha);
+            URI uri = new URI("https://api.github.com/repos/DD2480-Group-23/Group23-CI/statuses/" + sha);
 
             // Create JSON payload
             String json = "{\"state\": \"" + state + "\", \"description\": \"Build Status\", \"context\": \"ci/build\"}";
