@@ -21,7 +21,7 @@ public class Notification {
             URI uri = new URI("https://api.github.com/repos/DD2480-Group-23/Group23-CI/statuses/" + sha);
 
             // Create JSON payload
-            String json = "{\"state\": \"" + state + "\", \"description\": \"Build Status\", \"context\": \"ci/build\"}";
+            String json = "{\"state\":\"" + state + "\"}";
 
             // Create HTTP client
             HttpClient client = HttpClient.newHttpClient();
@@ -35,8 +35,12 @@ public class Notification {
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
+            System.out.println("Hej1");
+
             // Send HTTP request
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Hej2");
 
             // If we successfully changed the status, the status code will be 201
             if (response.statusCode() == 201) {
