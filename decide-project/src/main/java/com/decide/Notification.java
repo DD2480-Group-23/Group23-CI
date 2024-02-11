@@ -6,48 +6,48 @@ import java.net.URI;
 
 public class Notification {
 
+    private static HttpClient client = HttpClient.newHttpClient();
+
     /*
     * @param state
-    * @param shared
-    * @param repo
+    * @param sha
     *
      */
     public static boolean setStatus(String state, String sha){
         try{
-
+            // Insert token here
             String token = "INSERT_TOKEN_HERE";
-
-            // Construct the URL for setting status
+            // Create the URL for setting status
             URI uri = new URI("https://api.github.com/repos/DD2480-Group-23/Group23-CI/statuses/" + sha);
-
             // Create JSON payload
             String json = "{\"state\":\"" + state + "\"}";
-
-            // Create HTTP client
-            HttpClient client = HttpClient.newHttpClient();
-
-            // Create HTTP request, POST since we are submitting data to the server
-            // https://docs.github.com/en/rest/commits/statuses?apiVersion=2022-11-28
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(uri)
-                    .header("Authorization", "Bearer " + token)
-                    .header("Accept", "application/vnd.github+json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-
             // Send HTTP request
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // If we successfully changed the status, the status code will be 201
+            HttpResponse<String> response = client.send(createRequest(json, uri, token), HttpResponse.BodyHandlers.ofString());
+            // If the status was changed successfully, the status code will be 201
             if (response.statusCode() == 201) {
                 return true;
-            } else {
-                //System.out.println("Failed to set status: " + response.statusCode());
-                return false;
             }
+            //System.out.println("Failed to set status: " + response.statusCode());
+            return false;
         }
         catch(Exception e){
           return false;
         }
+    }
+
+    public static HttpRequest createRequest(String json, URI uri, String token) {
+      // Create HTTP request, POST since we are submitting data to the server
+      // https://docs.github.com/en/rest/commits/statuses?apiVersion=2022-11-28
+      HttpRequest request = HttpRequest.newBuilder()
+              .uri(uri)
+              .header("Authorization", "Bearer " + token)
+              .header("Accept", "application/vnd.github+json")
+              .POST(HttpRequest.BodyPublishers.ofString(json))
+              .build();
+      return request;
+    }
+    // For testing purposes
+    public static void setHttpClient(HttpClient mockClient) {
+        client = mockClient;
     }
 }
