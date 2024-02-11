@@ -55,4 +55,4 @@ _Jonatan_: Start Maven project, create barebones CI server, initialize webhooks,
 
 _Felix_: Start Maven project, create and start barebones CI server, initialize webhooks, add Git and Build (compile and test) functionalities to the CI server
 
-_Benjamin_: w
+_Benjamin_: State information in the CI server's console about compilation and testing of the affected branch when a webhook triggers
