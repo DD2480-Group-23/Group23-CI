@@ -15,7 +15,7 @@ public class Notification {
     public static boolean setStatus(String state, String sha){
         try{
 
-            String token = "";
+            String token = "INSERT_TOKEN_HERE";
 
             // Construct the URL for setting status
             URI uri = new URI("https://api.github.com/repos/DD2480-Group-23/Group23-CI/statuses/" + sha);
@@ -35,12 +35,8 @@ public class Notification {
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
-            System.out.println("Hej1");
-
             // Send HTTP request
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Hej2");
 
             // If we successfully changed the status, the status code will be 201
             if (response.statusCode() == 201) {
