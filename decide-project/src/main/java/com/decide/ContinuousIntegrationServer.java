@@ -134,19 +134,35 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         }
     }
 
-    // Additional method to extract the number of tests run from Maven output
+    /**
+    * Extracts the number of tests run from the Maven output.
+    *
+    * @param output The Maven output as a string.
+    * @return The number of tests run.
+    */
     private static int extractTestsRun(String mavenOutput) {
         String testsRunLine = findLineContaining(mavenOutput, "Tests run:");
         return extractNumberFromLine(testsRunLine);
     }
 
-    // Additional method to extract the number of tests failed from Maven output
+    /**
+     * Extracts the number of tests failed from the Maven output.
+     *
+     * @param output The Maven output as a string.
+     * @return The number of tests failed.
+     */
     private static int extractTestsFailed(String mavenOutput) {
         String testsFailedLine = findLineContaining(mavenOutput, "Failures:");
         return extractNumberFromLine(testsFailedLine);
     }
 
-    // Additional method to find a line containing a specific substring in the Maven output
+    /**
+     * Finds a line in the output that contains a specific keyword.
+     *
+     * @param output  The Maven output as a string.
+     * @param keyword The keyword to search for in the output.
+     * @return The line containing the keyword.
+     */
     private static String findLineContaining(String text, String substring) {
         String[] lines = text.split("\\r?\\n");
         for (String line : lines) {
@@ -157,7 +173,12 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         return "";
     }
 
-    // Additional method to extract a number from a line in the Maven output
+    /**
+     * Extracts a number from a line of text.
+     *
+     * @param line The line containing the number.
+     * @return The extracted number.
+     */
     private static int extractNumberFromLine(String line) {
         // Assuming the line contains the number as the last element (e.g., "Tests run: 42")
         String[] parts = line.split("\\D+");
