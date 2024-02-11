@@ -34,6 +34,11 @@ public class Notification {
           return false;
         }
     }
+    /*
+    * @param json
+    * @param uri
+    * @param token
+    */
 
     public static HttpRequest createRequest(String json, URI uri, String token) {
       // Create HTTP request, POST since we are submitting data to the server
