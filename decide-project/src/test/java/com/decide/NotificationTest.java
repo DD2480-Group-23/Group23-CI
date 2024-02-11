@@ -19,11 +19,16 @@ import java.util.*;
 
 /**
  * Test Class for Notification function.
- *
  */
 
  public class NotificationTest {
 
+
+   /**
+    * Tests setting the HTTPRequest
+    * Pre-conditions: sha = "test", state = "success", URI is given
+    * Post-conditions: The request from createRequest should equal the one created
+    */
     @Test
     public void tesHTTPRequest(){
         String sha = "test";

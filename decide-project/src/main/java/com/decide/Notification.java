@@ -9,11 +9,11 @@ public class Notification {
     private static HttpClient client = HttpClient.newHttpClient();
 
     /*
-    * @param state
-    * @param sha
+    * @param state    State to set status to {error, failure, pending, or success}
+    * @param sha      Sha of the commit
     *
      */
-    public static boolean setStatus(String state, String sha){
+    public static void setStatus(String state, String sha){
         try{
             // Insert token here
             String token = "INSERT_TOKEN_HERE";
@@ -25,19 +25,20 @@ public class Notification {
             HttpResponse<String> response = client.send(createRequest(json, uri, token), HttpResponse.BodyHandlers.ofString());
             // If the status was changed successfully, the status code will be 201
             if (response.statusCode() == 201) {
-                return true;
+                System.out.println("Successfully set status");
             }
-            //System.out.println("Failed to set status: " + response.statusCode());
-            return false;
+            else{
+              System.out.println("Failed to set status: " + response.statusCode());
+            }
         }
         catch(Exception e){
-          return false;
+          System.out.println("Failed to set status");
         }
     }
     /*
-    * @param json
-    * @param uri
-    * @param token
+    * @param json     Json containing commit status state
+    * @param uri      URI for the repo
+    * @param token    GitHub token
     */
 
     public static HttpRequest createRequest(String json, URI uri, String token) {
