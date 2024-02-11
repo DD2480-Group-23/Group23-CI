@@ -5,8 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.eclipse.jetty.server.Server;
@@ -99,9 +101,18 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             invoker.setOutputHandler(outputHandler).execute(invocationRequest);
             System.out.println("Maven command executed successfully.");
 
+            // Parse the Maven output to extract information about tests
+            String mavenOutput = IOUtils.toString(new FileInputStream("../git/output.txt"), StandardCharsets.UTF_8);
+
+            // Extract information about the number of tests run and failed
+            int testsRun = extractTestsRun(mavenOutput);
+            int testsFailed = extractTestsFailed(mavenOutput);
+
             // Print information to the console
             System.out.println("Branch triggered: " + branch);
             System.out.println("User who made the commit: " + json.getJSONObject("pusher").getString("name"));
+            System.out.println("Tests run: " + testsRun);
+            System.out.println("Tests failed: " + testsFailed);
             
             // Notify these results (PROPERTY 3)
 
@@ -110,6 +121,41 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         } catch (Exception e) {
             System.err.println(e);
         }
+    }
+
+    // Additional method to extract the number of tests run from Maven output
+    private static int extractTestsRun(String mavenOutput) {
+        String testsRunLine = findLineContaining(mavenOutput, "Tests run:");
+        return extractNumberFromLine(testsRunLine);
+    }
+
+    // Additional method to extract the number of tests failed from Maven output
+    private static int extractTestsFailed(String mavenOutput) {
+        String testsFailedLine = findLineContaining(mavenOutput, "Failures:");
+        return extractNumberFromLine(testsFailedLine);
+    }
+
+    // Additional method to find a line containing a specific substring in the Maven output
+    private static String findLineContaining(String text, String substring) {
+        String[] lines = text.split("\\r?\\n");
+        for (String line : lines) {
+            if (line.contains(substring)) {
+                return line;
+            }
+        }
+        return "";
+    }
+
+    // Additional method to extract a number from a line in the Maven output
+    private static int extractNumberFromLine(String line) {
+        // Assuming the line contains the number as the last element (e.g., "Tests run: 42")
+        String[] parts = line.split("\\D+");
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                return Integer.parseInt(part);
+            }
+        }
+        return 0;
     }
 
     /**
