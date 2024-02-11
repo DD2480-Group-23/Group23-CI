@@ -23,6 +23,7 @@ import org.eclipse.jgit.api.Git;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationOutputHandler;
+import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.PrintStreamHandler;
 
@@ -101,6 +102,15 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             invoker.setOutputHandler(outputHandler).execute(invocationRequest);
             System.out.println("Maven command executed successfully.");
 
+            // Execute the Maven command
+            InvocationResult invocationResult = invoker.execute(invocationRequest);
+
+            // Get the exit code from the result
+            int exitCode = invocationResult.getExitCode();
+
+            // Check if compilation and testing succeeded
+            boolean compilationAndTestingSucceeded = exitCode == 0;
+
             // Parse the Maven output to extract information about tests
             String mavenOutput = IOUtils.toString(new FileInputStream("../git/output.txt"), StandardCharsets.UTF_8);
 
@@ -111,6 +121,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             // Print information to the console
             System.out.println("Branch triggered: " + branch);
             System.out.println("User who made the commit: " + json.getJSONObject("pusher").getString("name"));
+            System.out.println("Compilation and testing succeeded: " + compilationAndTestingSucceeded);
             System.out.println("Tests run: " + testsRun);
             System.out.println("Tests failed: " + testsFailed);
             
