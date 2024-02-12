@@ -47,6 +47,11 @@
 
 6. Delete your testing branch when done!
 
+## How notifications are implemented and tested
+
+- Notifications are implemented through changing status of git commits, this is done through the REST API and HTTP. Note that a token needs to be inserted manually.
+- Testing is done through a test of the HTTP request body.
+
 ### Statement of contributions
 
 The work was divided equally between members, as shown below. Meetings were held to plan the work and to evaluate the work, which all team members attended.
@@ -54,5 +59,7 @@ The work was divided equally between members, as shown below. Meetings were held
 _Jonatan_: Start Maven project, create barebones CI server, initialize webhooks, add Git and Build (compile and test) functionalities to the CI server
 
 _Felix_: Start Maven project, create and start barebones CI server, initialize webhooks, add Git and Build (compile and test) functionalities to the CI server
+ 
+_Rasmus_: Notifications and Unit Testing for Notifications
 
-_Benjamin_: State information in the CI server's console about compilation and testing of the affected branch when a webhook triggers 
+_Benjamin_: State information in the CI server's console about compilation and testing of the affected branch when a webhook triggers

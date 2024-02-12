@@ -29,11 +29,12 @@ import org.apache.maven.shared.invoker.PrintStreamHandler;
 
 /**
  * Continuous Integration Server for GitHub webhooks
- * 
+ *
  * @author Benjamin Jansson Mbonyimana
  * @author Isadora Fukiat Winter
  * @author Felix Sjögren
  * @author Jonatan Stagge
+ * @author Rasmus Craelius
  */
 public class ContinuousIntegrationServer extends AbstractHandler {
 
@@ -41,7 +42,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * Handles an incoming webhook request.
      * Executes "mvn clean install" on the branch the webhook was activated.
      * This compiles and tests the code.
-     * 
+     *
      * @param target      The target of the request - either a URI or a name.
      * @param baseRequest The original unwrapped request object.
      * @param request     The request either as the {@link Request} object or a
@@ -70,7 +71,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             String localPath = "../git";
             // URL of remote repository
             String remoteURL = json.getJSONObject("repository").get("clone_url").toString();
-
+            System.out.println(remoteURL);
             // Remove previous repository clone
             File folder = new File(localPath);
             deleteDirectory(folder);
@@ -126,6 +127,11 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             System.out.println("Tests failed: " + testsFailed);
             
             // Notify these results (PROPERTY 3)
+            // Get sha
+            String commitSHA = json.getJSONObject("head_commit").getString("id");
+            // Chosse between error, failure, pending, or success
+            String state = "success";
+            Notification.setStatus(state, commitSHA);
 
             // Send response to GitHub
             response.getWriter().println("CI job done");
@@ -192,7 +198,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
     /**
      * Deletes a directory and all of its content.
-     * 
+     *
      * @param directory The directory to be deleted
      * @return true if success.
      */
@@ -224,7 +230,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
     /**
      * Start the CI server
-     * 
+     *
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
