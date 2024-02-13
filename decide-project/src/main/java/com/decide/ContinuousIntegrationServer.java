@@ -102,11 +102,10 @@ public class ContinuousIntegrationServer extends AbstractHandler {
                     true);
 
             // Execute the Maven command
-            invoker.setOutputHandler(outputHandler).execute(invocationRequest);
-            System.out.println("Maven command executed successfully.");
-
             // Execute the Maven command
-            InvocationResult invocationResult = invoker.execute(invocationRequest);
+
+            InvocationResult invocationResult = invoker.setOutputHandler(outputHandler).execute(invocationRequest);
+            System.out.println("Maven command executed successfully.");
 
             // Get the exit code from the result
             int exitCode = invocationResult.getExitCode();
