@@ -176,7 +176,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             if (line.contains("Results :")){
                 resultsFound = true;
             }
-            if (resultsFound&&line.contains(substring)) {
+            else if (resultsFound&&line.contains(substring)) {
                 return line;
             }
         }
