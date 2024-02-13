@@ -125,6 +125,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             System.out.println("Compilation and testing succeeded: " + compilationAndTestingSucceeded);
             System.out.println("Tests run: " + testsRun);
             System.out.println("Tests failed: " + testsFailed);
+            System.out.println("Test: HEJ");
             
             // Notify these results (PROPERTY 3)
             // Get sha
