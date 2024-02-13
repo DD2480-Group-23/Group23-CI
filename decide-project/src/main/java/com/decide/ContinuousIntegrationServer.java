@@ -203,6 +203,12 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         return 0;
     }
 
+    /**
+     * Extracts a number from a line of text after a specific substring.
+     * @param line The line containing the number.
+     * @param substring The substring that preceeds the number.
+     * @return The extracted number.
+     */
     private static int extractNumberAfterString(String line, String substring) {
         Pattern pattern = Pattern.compile(substring + "\\s*(\\d+)");
         Matcher matcher = pattern.matcher(line);
