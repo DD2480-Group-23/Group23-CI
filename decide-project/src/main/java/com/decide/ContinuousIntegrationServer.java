@@ -156,7 +156,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     * @return The number of tests run.
     */
     private static int extractTestsRun(String mavenOutput) {
-        String testsRunLine = findLineContaining(mavenOutput, "Tests run:", "Results :");
+        String testsRunLine = findLineContaining(mavenOutput, "Tests run:", "Results:");
         return extractNumberAfterString(testsRunLine, "Tests run:");
     }
 
@@ -167,8 +167,8 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * @return The number of tests failed.
      */
     private static int extractTestsFailed(String mavenOutput) {
-        String testsFailedLine = findLineContaining(mavenOutput, "Failures:", "Results :");
-        return extractNumberAfterString(testsFailedLine, "Failures:");
+        String testsFailedLine = findLineContaining(mavenOutput, ", Failures:", "Results:");
+        return extractNumberAfterString(testsFailedLine, ", Failures:");
     }
 
     /**
