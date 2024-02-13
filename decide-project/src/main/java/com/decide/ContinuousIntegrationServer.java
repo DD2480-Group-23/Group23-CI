@@ -174,9 +174,11 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         boolean resultsFound = false;
         for (String line : lines) {
             if (line.contains("Results :")){
+                System.out.println("Line: " + line);
                 resultsFound = true;
             }
             else if (resultsFound&&line.contains(substring)) {
+                System.out.println("Line: " + line);
                 return line;
             }
         }
