@@ -173,7 +173,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         String[] lines = text.split("\\r?\\n");
         boolean resultsFound = false;
         for (String line : lines) {
-            if (line.contains("Results:")){
+            if (line.contains("Results :")){
                 resultsFound = true;
             }
             if (resultsFound&&line.contains(substring)) {
