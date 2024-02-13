@@ -64,4 +64,4 @@ _Rasmus_: Notifications and Unit Testing for Notifications
 
 _Benjamin_: State information in the CI server's console about compilation and testing of the affected branch when a webhook triggers
 
-_Isadora_: Test
+_Isadora_: Test.
