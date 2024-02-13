@@ -204,7 +204,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     }
 
     private static int extractNumberAfterString(String line, String substring) {
-        Pattern pattern = Pattern.compile(substring + " (\\D+)");
+        Pattern pattern = Pattern.compile(substring + "\\s*(\\d+)");
         Matcher matcher = pattern.matcher(line);
         if(matcher.find()){
             return Integer.parseInt(matcher.group(1));
