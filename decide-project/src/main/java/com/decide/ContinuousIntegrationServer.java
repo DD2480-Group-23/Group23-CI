@@ -125,12 +125,19 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             System.out.println("Compilation and testing succeeded: " + compilationAndTestingSucceeded);
             System.out.println("Tests run: " + testsRun);
             System.out.println("Tests failed: " + testsFailed);
-            
+
             // Notify these results (PROPERTY 3)
             // Get sha
             String commitSHA = json.getJSONObject("head_commit").getString("id");
             // Chosse between error, failure, pending, or success
-            String state = "success";
+            String state;
+            if (compilationAndTestingSucceeded){
+              state = "success";
+            }
+            else{
+              state = "failure";
+            }
+
             Notification.setStatus(state, commitSHA);
 
             // Send response to GitHub
