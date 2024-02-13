@@ -171,8 +171,12 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      */
     private static String findLineContaining(String text, String substring) {
         String[] lines = text.split("\\r?\\n");
+        boolean resultsFound = false;
         for (String line : lines) {
-            if (line.contains(substring)) {
+            if (line.contains("Results:")){
+                resultsFound = true;
+            }
+            if (resultsFound&&line.contains(substring)) {
                 return line;
             }
         }
