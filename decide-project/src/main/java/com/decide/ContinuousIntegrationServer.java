@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
@@ -154,8 +156,8 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     * @return The number of tests run.
     */
     private static int extractTestsRun(String mavenOutput) {
-        String testsRunLine = findLineContaining(mavenOutput, "Tests run:");
-        return extractNumberFromLine(testsRunLine);
+        String testsRunLine = findLineContaining(mavenOutput, "Tests run:", "Results :");
+        return extractNumberAfterString(testsRunLine, "Tests run:");
     }
 
     /**
@@ -165,21 +167,26 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * @return The number of tests failed.
      */
     private static int extractTestsFailed(String mavenOutput) {
-        String testsFailedLine = findLineContaining(mavenOutput, "Failures:");
-        return extractNumberFromLine(testsFailedLine);
+        String testsFailedLine = findLineContaining(mavenOutput, "Failures:", "Results :");
+        return extractNumberAfterString(testsFailedLine, "Failures:");
     }
 
     /**
-     * Finds a line in the output that contains a specific keyword.
+     * Finds a line in the output that contains a specific keyword after a specific substring is found.
      *
      * @param output  The Maven output as a string.
      * @param keyword The keyword to search for in the output.
+     * @param substringContained The substring that must be found before the keyword.
      * @return The line containing the keyword.
      */
-    private static String findLineContaining(String text, String substring) {
+    private static String findLineContaining(String text, String substring, String substringContained) {
         String[] lines = text.split("\\r?\\n");
+        boolean substringFound = false;
         for (String line : lines) {
-            if (line.contains(substring)) {
+            if (line.contains(substringContained)){
+                substringFound = true;
+            }
+            if (substringFound&&line.contains(substring)) {
                 return line;
             }
         }
@@ -199,6 +206,21 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             if (!part.isEmpty()) {
                 return Integer.parseInt(part);
             }
+        }
+        return 0;
+    }
+
+    /**
+     * Extracts a number from a line of text after a specific substring.
+     * @param line The line containing the number.
+     * @param substring The substring that preceeds the number.
+     * @return The extracted number.
+     */
+    private static int extractNumberAfterString(String line, String substring) {
+        Pattern pattern = Pattern.compile(substring + "\\s*(\\d+)");
+        Matcher matcher = pattern.matcher(line);
+        if(matcher.find()){
+            return Integer.parseInt(matcher.group(1));
         }
         return 0;
     }

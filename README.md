@@ -63,3 +63,5 @@ _Felix_: Start Maven project, create and start barebones CI server, initialize w
 _Rasmus_: Notifications and Unit Testing for Notifications
 
 _Benjamin_: State information in the CI server's console about compilation and testing of the affected branch when a webhook triggers
+
+_Isadora_: Test.
