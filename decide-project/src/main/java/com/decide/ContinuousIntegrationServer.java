@@ -49,7 +49,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * @param baseRequest The original unwrapped request object.
      * @param request     The request either as the {@link Request} object or a
      *                    wrapper of that request.
-     * @param response    The response as the {@link Response} object or a wrapper
+     * @param response    The response as the Response object or a wrapper
      *                    of that request.
      * @throws IOException
      * @throws ServletException
@@ -132,11 +132,10 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             String commitSHA = json.getJSONObject("head_commit").getString("id");
             // Chosse between error, failure, pending, or success
             String state;
-            if (compilationAndTestingSucceeded){
-              state = "success";
-            }
-            else{
-              state = "failure";
+            if (compilationAndTestingSucceeded) {
+                state = "success";
+            } else {
+                state = "failure";
             }
 
             Notification.setStatus(state, commitSHA);
@@ -149,11 +148,11 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     }
 
     /**
-    * Extracts the number of tests run from the Maven output.
-    *
-    * @param output The Maven output as a string.
-    * @return The number of tests run.
-    */
+     * Extracts the number of tests run from the Maven output.
+     *
+     * @param output The Maven output as a string.
+     * @return The number of tests run.
+     */
     private static int extractTestsRun(String mavenOutput) {
         String testsRunLine = findLineContaining(mavenOutput, "Tests run:", "Results:");
         return extractNumberAfterString(testsRunLine, "Tests run:");
@@ -171,21 +170,23 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     }
 
     /**
-     * Finds a line in the output that contains a specific keyword after a specific substring is found.
+     * Finds a line in the output that contains a specific keyword after a specific
+     * substring is found.
      *
-     * @param output  The Maven output as a string.
-     * @param keyword The keyword to search for in the output.
-     * @param substringContained The substring that must be found before the keyword.
+     * @param output             The Maven output as a string.
+     * @param keyword            The keyword to search for in the output.
+     * @param substringContained The substring that must be found before the
+     *                           keyword.
      * @return The line containing the keyword.
      */
     private static String findLineContaining(String text, String substring, String substringContained) {
         String[] lines = text.split("\\r?\\n");
         boolean substringFound = false;
         for (String line : lines) {
-            if (line.contains(substringContained)){
+            if (line.contains(substringContained)) {
                 substringFound = true;
             }
-            if (substringFound&&line.contains(substring)) {
+            if (substringFound && line.contains(substring)) {
                 return line;
             }
         }
@@ -199,7 +200,8 @@ public class ContinuousIntegrationServer extends AbstractHandler {
      * @return The extracted number.
      */
     private static int extractNumberFromLine(String line) {
-        // Assuming the line contains the number as the last element (e.g., "Tests run: 42")
+        // Assuming the line contains the number as the last element (e.g., "Tests run:
+        // 42")
         String[] parts = line.split("\\D+");
         for (String part : parts) {
             if (!part.isEmpty()) {
@@ -211,14 +213,15 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
     /**
      * Extracts a number from a line of text after a specific substring.
-     * @param line The line containing the number.
+     * 
+     * @param line      The line containing the number.
      * @param substring The substring that preceeds the number.
      * @return The extracted number.
      */
     private static int extractNumberAfterString(String line, String substring) {
         Pattern pattern = Pattern.compile(substring + "\\s*(\\d+)");
         Matcher matcher = pattern.matcher(line);
-        if(matcher.find()){
+        if (matcher.find()) {
             return Integer.parseInt(matcher.group(1));
         }
         return 0;
